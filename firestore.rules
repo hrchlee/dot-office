@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 로그인한 본인의 데이터만 읽고 쓸 수 있습니다.
+    match /users/{uid}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+    // 내 계정 하나만 허용하려면 위 조건을 아래처럼 바꾸세요 (UID는 로그인 후 페이지 맨 아래에 표시됩니다).
+    // allow read, write: if request.auth != null && request.auth.uid == "여기에_내_UID";
+  }
+}
